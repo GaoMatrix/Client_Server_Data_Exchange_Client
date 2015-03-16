@@ -124,7 +124,7 @@ public class LoginActivity extends Activity {
     }
 
     private void initView() {
-        this.txtLoginName = (EditText) findViewById(R.id.txt_login);
+        this.txtLoginName = (EditText) findViewById(R.id.txt_login_name);
         this.txtLoginPassword = (EditText) findViewById(R.id.txt_login_password);
         this.btnLogin = (Button) findViewById(R.id.btn_login);
         this.btnReset = (Button) findViewById(R.id.btn_reset);

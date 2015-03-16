@@ -3,9 +3,14 @@
 
     <string name="app_name">Client_Server_Data_Exchange</string>
     <string name="hello_world">Hello world!</string>
-    
-    <string name="txt_login">登录名</string>
-	<string name="txt_login_password">登陆密码</string>
-	<string name="btn_login">登陆</string>
-	<string name="btn_reset">重置</string>
+    <string name="txt_login_name">登录名</string>
+    <string name="txt_login_password">登陆密码</string>
+    <string name="btn_login">登陆</string>
+    <string name="btn_register">注册</string>
+    <string name="btn_reset">重置</string>
+    <string name="txt_interesting">兴趣</string>
+    <string name="chk_game">游戏</string>
+    <string name="chk_music">音乐</string>
+    <string name="chk_sports">体育</string>
+
 </resources>

@@ -1,9 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="${relativePackage}.${activityClass}" >
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -28,35 +27,46 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:text="@string/txt_login_password" />
+            android:text="@string/txt_interesting" />
 
-        <EditText
-            android:id="@+id/txt_login_password"
-            android:layout_width="0dp"
+        <CheckBox
+            android:id="@+id/chk_game"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:inputType="textPassword" />
+            android:text="@string/chk_game" />
+
+        <CheckBox
+            android:id="@+id/chk_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chk_music" />
+
+        <CheckBox
+            android:id="@+id/chk_sports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chk_sports" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" 
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_login" />
+            android:text="@string/btn_register" />
 
         <Button
             android:id="@+id/btn_reset"

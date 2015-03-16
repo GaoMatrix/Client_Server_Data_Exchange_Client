@@ -52,21 +52,10 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new ServiceRulesException(LoginActivity.MSG_LOGIN_FAILED);
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    }
+
+    @Override
+    public void userRegister(String loginName, List<String> interesting) throws Exception {
+        Thread.sleep(2000);
     }
 }
