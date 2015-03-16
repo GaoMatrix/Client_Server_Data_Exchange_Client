@@ -24,6 +24,8 @@ public class LoginActivity extends Activity {
     private static final String MSG_LOGIN_ERROR = "登陆失败";
     private static final String MSG_LOGIN_SUCCESS = "登陆成功";
     public static final String MSG_LOGIN_FAILED = "登陆名|登陆密码出错";
+    public static final String MSG_SERVER_ERROR = "服务器错误";
+
 
     private EditText txtLoginName;
     private EditText txtLoginPassword;
