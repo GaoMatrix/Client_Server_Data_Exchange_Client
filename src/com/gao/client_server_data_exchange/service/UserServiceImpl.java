@@ -1,9 +1,7 @@
 
 package com.gao.client_server_data_exchange.service;
 
-import android.graphics.Point;
-
-import com.gao.client_server_data_exchange.LoginActivity;
+import com.gao.client_server_data_exchange.RegisterActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -48,13 +46,13 @@ public class UserServiceImpl implements UserService {
         
         int statusCode = httpResponse.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {//200
-            throw new ServiceRulesException(LoginActivity.MSG_SERVER_ERROR);
+            throw new ServiceRulesException(RegisterActivity.MSG_SERVER_ERROR);
         }
         String result = EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8);
         if (result.equals("success")) {
             
         } else {
-            throw new ServiceRulesException(LoginActivity.MSG_LOGIN_FAILED);
+            throw new ServiceRulesException(RegisterActivity.MSG_REGISTER_FAILED);
         }
     }
 
@@ -74,7 +72,7 @@ public class UserServiceImpl implements UserService {
             }
           }
         object.put("Interesting", array);
-        NameValuePair parameter = new BasicNameValuePair("Data ", object.toString());
+        NameValuePair parameter = new BasicNameValuePair("Data", object.toString());
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(parameter);
         
@@ -83,13 +81,25 @@ public class UserServiceImpl implements UserService {
         
         int statusCode = httpResponse.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {//200
-            throw new ServiceRulesException(LoginActivity.MSG_SERVER_ERROR);
+            throw new ServiceRulesException(RegisterActivity.MSG_SERVER_ERROR);
         }
-        String result = EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8);
+       /* String result = EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8);
         if (result.equals("success")) {
             
         } else {
-            throw new ServiceRulesException(LoginActivity.MSG_LOGIN_FAILED);
+            throw new ServiceRulesException(RegisterActivity.MSG_REGISTER_FAILED);
+        }*/
+        
+        //从响应中取得服务器的返回结果
+        String results = EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8);
+        //解析JSON
+        JSONObject jsonResults = new JSONObject(results);
+        String result = jsonResults.getString("result");
+        if (result.equals("success")) {
+            
+        } else {
+            String errorMsg = jsonResults.getString("errorMsg");
+            throw new ServiceRulesException(errorMsg);
         }
      }
         
@@ -102,5 +112,4 @@ public class UserServiceImpl implements UserService {
         
         
         
-    }
 }
