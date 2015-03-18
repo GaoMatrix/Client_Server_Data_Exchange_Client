@@ -2,12 +2,14 @@
 package com.gao.client_server_data_exchange.service;
 
 import com.gao.client_server_data_exchange.RegisterActivity;
+import com.gao.client_server_data_exchange.entity.Student;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -102,6 +104,33 @@ public class UserServiceImpl implements UserService {
             throw new ServiceRulesException(errorMsg);
         }
      }
+
+    @Override
+    public List<Student> getStudents() throws Exception {
+        List<Student> studentList = new ArrayList<Student>();
+        HttpClient httpClient = new DefaultHttpClient();
+        String uri = "http://192.168.1.2:8080/Client_Server_Data_Exchange/getStudent.do";
+        HttpGet httpGet = new HttpGet(uri);
+
+        HttpResponse httpResponse = httpClient.execute(httpGet);
+
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != HttpStatus.SC_OK) {// 200
+            throw new ServiceRulesException(RegisterActivity.MSG_SERVER_ERROR);
+        }
+        String results = EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8);
+        JSONArray array = new JSONArray(results);
+
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject jsonStudent = array.getJSONObject(i);
+            Long id = Long.parseLong(jsonStudent.getString("id")); 
+            String name = jsonStudent.getString("name");
+            int age = jsonStudent.getInt("age");
+            studentList.add(new Student(id, name, age));
+        }
+
+        return studentList;
+    }
         
         
         
