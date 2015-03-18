@@ -1,6 +1,8 @@
 
 package com.gao.client_server_data_exchange.service;
 
+import android.graphics.Bitmap;
+
 import com.gao.client_server_data_exchange.entity.Student;
 
 import java.util.List;
@@ -11,4 +13,6 @@ public interface UserService {
     public void userRegister(String loginName, List<String> interesting) throws Exception;
 
     public List<Student> getStudents() throws Exception;
+
+    public Bitmap getImage() throws Exception;
 }

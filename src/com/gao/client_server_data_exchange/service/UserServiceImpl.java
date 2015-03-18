@@ -1,6 +1,9 @@
 
 package com.gao.client_server_data_exchange.service;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.gao.client_server_data_exchange.RegisterActivity;
 import com.gao.client_server_data_exchange.entity.Student;
 
@@ -18,6 +21,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,6 +136,41 @@ public class UserServiceImpl implements UserService {
         }
 
         return studentList;
+    }
+
+    @Override
+    public Bitmap getImage() throws Exception {
+        Bitmap bitmap = null;
+        URL url = null;
+        HttpURLConnection urlConnection = null;
+        InputStream in = null;
+
+        try {
+            url = new URL("http://192.168.1.2:8080/Client_Server_Data_Exchange/getImage.jpeg?id=1");
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            // 设置可以读取
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new ServiceRulesException("Server error");
+            }
+
+            in = urlConnection.getInputStream();
+            if (null != in) {
+                bitmap = BitmapFactory.decodeStream(in);
+            }
+        } finally {
+            if (null != in) {
+                in.close();
+            }
+            if (null != urlConnection) {
+                urlConnection.disconnect();
+            }
+        }
+        return bitmap;
     }
         
         
