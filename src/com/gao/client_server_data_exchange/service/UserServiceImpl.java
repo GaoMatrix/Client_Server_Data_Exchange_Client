@@ -21,11 +21,17 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserServiceImpl implements UserService {
 
@@ -138,15 +144,64 @@ public class UserServiceImpl implements UserService {
         return studentList;
     }
 
+    private static StringBuffer setPostPassParams(Map<String, String> params)
+            throws UnsupportedEncodingException {
+        StringBuffer stringBuffer = new StringBuffer();
+        // k1=v1&k2=v2....
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            stringBuffer.append(entry.getKey())
+                    .append("=")
+                    .append(URLEncoder.encode(entry.getValue(), ("UTF-8")))
+                    .append("&");
+        }
+        // 把最后&去掉
+        stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+        return stringBuffer;
+    }
+    
     @Override
     public Bitmap getImage() throws Exception {
         Bitmap bitmap = null;
         URL url = null;
         HttpURLConnection urlConnection = null;
         InputStream in = null;
-
+        OutputStream out = null;
+        byte[] buffer = null;
         try {
-            url = new URL("http://192.168.1.2:8080/Client_Server_Data_Exchange/getImage.jpeg?id=1");
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("id", "1");
+            buffer = setPostPassParams(params).toString().getBytes();
+            /***post****/
+            url = new URL("http://192.168.1.2:8080/Client_Server_Data_Exchange/getImage.jpeg");
+            urlConnection = (HttpURLConnection) url.openConnection();
+            //设置请求的超时时间
+            urlConnection.setConnectTimeout(3000);
+            //设置响应的超时时间
+            urlConnection.setReadTimeout(3000);
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestMethod("POST");
+            //取消缓存
+            urlConnection.setUseCaches(false);
+            urlConnection.connect();
+
+            //输出流，客户端向服务器传输数据
+            out = urlConnection.getOutputStream();
+            out.write(buffer);
+            out.flush();
+            
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new ServiceRulesException("Server error");
+            }
+
+            in = new BufferedInputStream(urlConnection.getInputStream());
+            if (null != in) {
+                bitmap = BitmapFactory.decodeStream(in);
+            } 
+            
+            /*****get****/
+            /*url = new URL("http://192.168.1.2:8080/Client_Server_Data_Exchange/getImage.jpeg?id=1");
             urlConnection = (HttpURLConnection) url.openConnection();
 
             // 设置可以读取
@@ -161,7 +216,7 @@ public class UserServiceImpl implements UserService {
             in = urlConnection.getInputStream();
             if (null != in) {
                 bitmap = BitmapFactory.decodeStream(in);
-            }
+            }*/
         } finally {
             if (null != in) {
                 in.close();
